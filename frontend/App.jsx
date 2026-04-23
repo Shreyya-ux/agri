@@ -1,13 +1,8 @@
-import React, { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
+import React, { useEffect, useState } from "react";
+import { Routes, Route, Link, Navigate, useLocation } from "react-router-dom";
 
-import Advisor from "./Advisor";
-import Home from "./Home";
-import Resources from "./Resources";
-import CropGuide from "./CropGuide";
-import CropProfitCalculator from "./CropProfitCalculator";
-import FarmingMap from "./FarmingMap";
+import { ToastContainer } from "react-toastify";
+
 import {
   FaHome,
   FaComments,
@@ -17,8 +12,8 @@ import {
   FaTimes,
   FaCalculator,
   FaMap,
+  FaTachometerAlt,
 } from "react-icons/fa";
-import { ToastContainer } from "react-toastify";
 
 import Advisor from "./Advisor";
 import Home from "./Home";
@@ -35,8 +30,11 @@ import Feedback from "./Feedback";
 import AdminFeedback from "./AdminFeedback";
 import Calendar from "./FarmingCalendar";
 import MarketPrices from "./MarketPrices";
+import FarmingMap from "./FarmingMap";
+import CropProfitCalculator from "./CropProfitCalculator";
 
-import { auth, db, isFirebaseConfigured } from "./lib/firebase";
+import { auth, db, isFirebaseConfigured, doc, onSnapshot } from "./lib/firebase";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
 import "./App.css";
 import "./themes/sunlight.css";
@@ -98,8 +96,29 @@ function App() {
   const [userData, setUserData] = useState(null);
   const [profileCompleted, setProfileCompleted] = useState(true);
   const [loading, setLoading] = useState(true);
-  const [showScorecard, setShowScorecard] = useState(false);
+  const [showScorecard] = useState(false);
   const location = useLocation();
+
+  const farmerName = userData?.name || user?.displayName || "";
+
+  const handleLangChange = (e) => {
+    syncLanguage(e.target.value, setPreferredLang);
+  };
+
+  const handleNavToggle = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      setUser(null);
+      setUserData(null);
+      setProfileCompleted(true);
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
 
   useNotifications();
 
@@ -124,18 +143,9 @@ function App() {
 
    useEffect(() => {
      setGoogleTranslateCookie(preferredLang);
-   }, [preferredLang]);
+    }, [preferredLang]);
 
-  /* LOGIN handlers */
-  const handleLogin = (e) => {
-    e.preventDefault();
-
-    if (!inputName.trim()) {
-      alert("Name is required");
-      return;
-    }
-
-  useEffect(() => {
+   useEffect(() => {
     if (!isFirebaseConfigured()) {
       setLoading(false);
       return;
@@ -246,54 +256,11 @@ function App() {
             className="hamburger"
             onClick={handleNavToggle}
           >
-            {isNavOpen ? <FaTimes /> : <FaBars />}
+            {isOpen ? <FaTimes /> : <FaBars />}
           </button>
         </nav>
 
-        {/* ROUTES */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/advisor" element={<Advisor />} />
-          <Route
-            path="/farming-map"
-            element={
-              <div className="page-container">
-                <FarmingMap />
-              </div>
-            }
-          />
-          <Route path="/how-it-works" element={<How />} />
-          <Route path="/profit-calculator" element={<CropProfitCalculator />} />
 
-          <Route
-            path="/login"
-            element={
-              <div className="login-page">
-                <div className="login-card">
-                  <h2>👨‍🌾 Farmer Login</h2>
-
-                  <form onSubmit={handleLogin}>
-                    <input
-                      type="text"
-                      placeholder="Enter your name"
-                      value={inputName}
-                      onChange={(e) => setInputName(e.target.value)}
-                    />
-
-                    <button type="submit">Login</button>
-                  </form>
-                </div>
-              </div>
-            ) : (
-              <Link to="/login" className="btn-get-started">Get Started</Link>
-            )}
-          </div>
-        </div>
-
-        <button className="hamburger" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle Menu">
-          {isOpen ? <FaTimes /> : <FaBars />}
-        </button>
-      </nav>
 
       {!loading && user && !user.emailVerified && !showScorecard && location.pathname !== "/login" && (
         <div className="verification-overlay">
@@ -332,6 +299,8 @@ function App() {
         <Route path="/share-feedback" element={<Feedback />} />
         <Route path="/admin/feedback" element={<AdminFeedback />} />
         <Route path="/market-prices" element={<MarketPrices />} />
+        <Route path="/farming-map" element={<FarmingMap />} />
+        <Route path="/profit-calculator" element={<CropProfitCalculator />} />
       </Routes>
 
       <ToastContainer position="bottom-right" />

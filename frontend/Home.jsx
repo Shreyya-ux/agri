@@ -15,15 +15,14 @@ import {
   FaGlobe,
   FaLandmark,
   FaCalendarAlt,
-  FaCommentDots
+  FaCommentDots,
+  FaCalculator
 } from "react-icons/fa";
 import WeatherAlertBar from "./weather/WeatherAlertBar";
 import WeatherQuickWidget from "./weather/WeatherQuickWidget";
-import { auth, isFirebaseConfigured } from "./lib/firebase";
 import "./Home.css";
 
-export default function Home() {
-  const features = [
+const features = [
     {
       icon: <FaBrain />,
       title: "AI-Powered Predictions",
