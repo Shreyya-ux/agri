@@ -232,70 +232,71 @@ function App() {
 
         </ul>
 
-        <div className="nav-right">
-          <button onClick={handleThemeToggle} className="theme-toggle" aria-label="Toggle Theme">
-            {isDarkTheme ? "☀️" : "🌙"}
-          </button>
+         <div className="nav-right">
+           <button onClick={handleThemeToggle} className="theme-toggle" aria-label="Toggle Theme">
+             {isDarkTheme ? "☀️" : "🌙"}
+           </button>
 
-            <select
-              className="lang-select notranslate"
-              value={preferredLang}
-              onChange={handleLangChange}
-            >
-              {LANGUAGE_OPTIONS.map((l) => (
-                <option key={l.value} value={l.value}>
-                  {l.label}
-                </option>
-              ))}
-            </select>
+             <select
+               className="lang-select notranslate"
+               value={preferredLang}
+               onChange={handleLangChange}
+             >
+               {LANGUAGE_OPTIONS.map((l) => (
+                 <option key={l.value} value={l.value}>
+                   {l.label}
+                 </option>
+               ))}
+             </select>
 
-          <div className="nav-user" onClick={() => setShowScorecard(!showScorecard)}>
-            {loading ? (
-              <div className="nav-loader-mini"></div>
-            ) : user ? (
-              <div className="user-profile-trigger">
-                <div className="profile-main">
-                  <span className="profile-name">{userData?.displayName || user.email?.split('@')[0]}</span>
-                  <FaChevronDown className={`chevron ${showScorecard ? 'open' : ''}`} />
-                </div>
+           <div className="nav-user" onClick={() => setShowScorecard(!showScorecard)}>
+             {loading ? (
+               <div className="nav-loader-mini"></div>
+             ) : user ? (
+               <div className="user-profile-trigger">
+                 <div className="profile-main">
+                   <span className="profile-name">{userData?.displayName || user.email?.split('@')[0]}</span>
+                   <FaChevronDown className={`chevron ${showScorecard ? 'open' : ''}`} />
+                 </div>
 
-                {showScorecard && userData && (
-                  <div className="profile-scorecard" onClick={(e) => e.stopPropagation()}>
-                    <div className="scorecard-header">
-                      <div className="scorecard-avatar">{userData.displayName?.[0] || 'F'}</div>
-                      <h3>{userData.displayName}</h3>
-                      <p>{userData.email}</p>
-                    </div>
-                    <div className="scorecard-body">
-                      {[
-                        { label: "Primary Crop", value: userData.cropType },
-                        { label: "Language", value: LANGUAGE_OPTIONS.find(l => l.value === userData.language)?.label || userData.language },
-                        { label: "Location", value: userData.address || "Fetching..." }
-                      ].map((item, i) => (
-                        <div key={i} className="score-item">
-                          <label>{item.label}</label>
-                          <span>{item.value}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="scorecard-footer">
-                      <button onClick={handleLogout} className="btn-logout-alt">Sign Out</button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <Link to="/login" className="btn-get-started">Get Started</Link>
-            )}
-          </div>
+                 {showScorecard && userData && (
+                   <div className="profile-scorecard" onClick={(e) => e.stopPropagation()}>
+                     <div className="scorecard-header">
+                       <div className="scorecard-avatar">{userData.displayName?.[0] || 'F'}</div>
+                       <h3>{userData.displayName}</h3>
+                       <p>{userData.email}</p>
+                     </div>
+                     <div className="scorecard-body">
+                       {[
+                         { label: "Primary Crop", value: userData.cropType },
+                         { label: "Language", value: LANGUAGE_OPTIONS.find(l => l.value === userData.language)?.label || userData.language },
+                         { label: "Location", value: userData.address || "Fetching..." }
+                       ].map((item, i) => (
+                         <div key={i} className="score-item">
+                           <label>{item.label}</label>
+                           <span>{item.value}</span>
+                         </div>
+                       ))}
+                     </div>
+                     <div className="scorecard-footer">
+                       <button onClick={handleLogout} className="btn-logout-alt">Sign Out</button>
+                     </div>
+                   </div>
+                 )}
+               </div>
+             ) : (
+               <Link to="/login" className="btn-get-started">Get Started</Link>
+             )}
+           </div>
+         </div>
 
-          <button
-            className="hamburger"
-            onClick={handleNavToggle}
-          >
-            {isOpen ? <FaTimes /> : <FaBars />}
-          </button>
-        </div>
+         <button
+           className="hamburger"
+           onClick={handleNavToggle}
+           aria-label="Toggle navigation"
+         >
+           {isOpen ? <FaTimes /> : <FaBars />}
+         </button>
       </nav>
 
 
