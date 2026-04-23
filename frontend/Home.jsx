@@ -204,9 +204,7 @@ export default function Home({ user }) {
   return (
     <div className="home">
       <WeatherAlertBar />
-      <div className="home-weather-relative-wrap">
-        <WeatherQuickWidget />
-      </div>
+     
       <section className="hero-section highlight-light">
         {/* Real background image layer with overlay for contrast */}
         <div className="hero-bg-image" aria-hidden="true">
