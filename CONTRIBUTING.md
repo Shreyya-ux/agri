@@ -25,18 +25,34 @@ npm run dev
 python -m uvicorn main:app --port 8000
 ```
 
-## Code Style
+## 🧠 Code Guidelines
 
-- Use meaningful variable and function names
-- Add comments for complex logic
-- Keep components small and focused
-- Test your changes before submitting
+📌 Clean Code Practices
+Use meaningful variable names
+Keep functions small and focused
+Avoid duplicate code
+💬 Comments
+Add comments for complex logic only
+Keep code self-explanatory
 
-## Issues
+## 🎨 UI Guidelines
+Maintain design consistency
+Ensure mobile responsiveness
+Avoid breaking existing layout
+🐛 Reporting Issues
 
-- Feel free to open issues for bugs, feature requests, or questions
-- Provide clear steps to reproduce bugs
-- Include relevant screenshots if applicable
+## If you find a bug:
+
+Open an issue
+Clearly describe the problem
+Add steps to reproduce
+Include screenshots (if possible)
+🏷️ Issue Rules
+
+## Before starting work:
+
+Comment "assign me" on the issue
+Wait for assignment before starting work
 
 ## License
 
