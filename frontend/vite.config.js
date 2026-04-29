@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import legacy from '@vitejs/plugin-legacy'
 import { VitePWA } from 'vite-plugin-pwa'
 
 const spaFallbackPlugin = () => ({
@@ -23,12 +22,8 @@ export default defineConfig(() => ({
   plugins: [
     spaFallbackPlugin(),
     react(),
-    // Legacy polyfills for older browsers (e.g., older Android Chrome)
-    // Critical for rural farmers who may be using older mobile devices
-    legacy({
-      targets: ['defaults', 'not IE 11', 'Android >= 4.4', 'Chrome >= 61'],
-      modernPolyfills: true
-    }),
+    // Legacy browser support removed: React Router 7 requires modern syntax.
+    // Minimum supported: Chrome 90+, Android 5+, Safari 14+, Edge 90+
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: [],
